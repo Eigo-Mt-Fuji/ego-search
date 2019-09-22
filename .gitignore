@@ -1,0 +1,8 @@
+artifacts
+/node_modules
+/dist/
+/credentials.json
+
+terraform/*.terraform
+terraform/*.plan
+terraform/*.tfstate

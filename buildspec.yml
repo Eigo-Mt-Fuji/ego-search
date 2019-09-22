@@ -1,0 +1,53 @@
+version: 0.2
+
+env:
+  variables:
+    TF_VERSION: "0.12.6"
+
+phases:
+
+  install:
+    runtime-versions:
+      nodejs: 8
+      docker: 18
+    commands:
+      # install terraform
+      - echo "Install terraform $TF_VERSION ( https://learn.hashicorp.com/terraform/getting-started/install.html#installing-terraform )"
+      - "curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+      - "unzip -o terraform.zip"
+      - "mv ./terraform /usr/local/bin/terraform"
+      - "chmod +x /usr/local/bin/terraform"
+      # install jq
+      - "curl -s -qL -o cd /usr/local/bin/jq https://stedolan.github.io/jq/download/linux64/jq"
+      - "chmod +x cd /usr/local/bin/jq"
+      - "cd /usr/local/bin/"
+
+  pre_build:
+    commands:
+      - echo "build started on `date`"
+
+  build:
+    commands:
+
+      - cd $CODEBUILD_SRC_DIR/
+      - aws --region $AWS_REGION ecr get-login --no-include-email | sh
+      
+      - docker build -t ego-search-batch:latest . # bundle install, yarn install
+      - docker tag ego-search-batch:latest $DOCKER_REPO_URL
+      - docker push $DOCKER_REPO_URL
+
+      - echo "Apply scheduled tasks"
+      - cd $CODEBUILD_SRC_DIR/terraform
+      - terraform init -backend=true
+      - terraform validate
+      - terraform workspace list	
+      - terraform workspace select $WORKSPACE	
+      - terraform plan -out="terraform.plan"
+      - terraform apply "./terraform.plan"
+  post_build:
+    commands:
+      - echo "build end on `date`"
+
+artifacts:
+  files:
+    - '**/*'
