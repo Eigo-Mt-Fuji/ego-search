@@ -3,6 +3,9 @@ variable "service_name" {
 
   default = "ego-search"
 }
+variable "github_oauth_token" {
+  default = ""
+}
 variable "youtube_api_key" {
 
   default = ""
