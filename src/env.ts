@@ -4,14 +4,22 @@ export default class Env {
             bucketName: this.getEnv("EGO_SEARCH_RESULT_BUCKET"),
         };
     }
+    get egoSearchKeyword() {
+        return {
+            q: this.getEnv("EGO_SEARCH_KEYWORD"),
+        };
+    }
     get twitterCredential() {
         return {
-            apiKey: this.getEnv("EGO_SEARCH_TWITTER_API_KEY"),
+            consumerKey: this.getEnv("TWITTER_CONSUMER_KEY"),
+            consumerSecret: this.getEnv("TWITTER_CONSUMER_SECRET"),
+            accessTokenKey: this.getEnv("TWITTER_ACCESS_TOKEN_KEY"),
+            accessTokenSecret: this.getEnv("TWITTER_ACCESS_TOKEN_SECRET"),
         };
     }
     get youtubeCredential() {
         return {
-            apiKey: this.getEnv("EGO_SEARCH_YOUTUBE_API_KEY"),
+            apiKey: this.getEnv("YOUTUBE_API_KEY"),
         };
     }
 

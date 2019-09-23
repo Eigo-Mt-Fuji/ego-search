@@ -3,9 +3,11 @@ variable "attributes" {
         cluster_arn = string,
         private_subnets = list(string),
         awslogs_group = string,
-        ssm_arn_slack_webhook_url_deploy = string,
-        ssm_arn_rails_master_key = string,
-        ssm_arn_database_url = string,
+        ssm_arn_google_youtube_api_key = string,
+        ssm_arn_twitter_consumer_key = string,
+        ssm_arn_twitter_consumer_secret = string,
+        ssm_arn_twitter_access_token_key = string,
+        ssm_arn_twitter_access_token_secret = string,
         image_repository_url = string,
         image_tag = string,
         cpu_units = number,
@@ -14,7 +16,6 @@ variable "attributes" {
         fargate_platform_version = string,
         cost_tag_service = string,
         cost_tag_env = string
-        rails_env = string
         task_name = string,
         task_command = list(string),
         schedule_expression = string
@@ -24,8 +25,11 @@ variable "attributes" {
         cluster_arn = ""
         private_subnets = []
         awslogs_group = ""
-        ssm_google_youtube_api_key = ""
-        ssm_twitter_api_key = ""
+        ssm_arn_google_youtube_api_key = ""
+        ssm_arn_twitter_consumer_key = ""
+        ssm_arn_twitter_consumer_secret = ""
+        ssm_arn_twitter_access_token_key = ""
+        ssm_arn_twitter_access_token_secret = ""
         image_repository_url = ""
         image_tag = "latest"
         cpu_units = 256 

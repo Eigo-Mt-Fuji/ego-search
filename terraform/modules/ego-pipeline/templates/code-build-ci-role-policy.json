@@ -1,0 +1,42 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "s3:*",
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+      },
+      {
+        "Action": [
+          "dynamodb:*"
+        ],
+        "Effect": "Allow",
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": [
+           "route53:Get*",
+           "route53:List*",
+           "route53:TestDNSAnswer"
+        ]
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": [
+           "ssm:GetParameters"
+        ]
+      }
+    ]
+}

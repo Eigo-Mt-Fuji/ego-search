@@ -6,3 +6,4 @@ artifacts
 terraform/*.terraform
 terraform/*.plan
 terraform/*.tfstate
+terraform/*.tfvars

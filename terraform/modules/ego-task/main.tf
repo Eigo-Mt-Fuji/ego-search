@@ -51,27 +51,32 @@ resource "aws_ecs_task_definition" "task" {
       },
       "secrets":[
         {
-          "name": "DATABASE_URL",
-          "valueFrom": "${var.attributes.ssm_arn_database_url}"
+          "name": "YOUTUBE_API_KEY",
+          "valueFrom": "${var.attributes.ssm_arn_google_youtube_api_key}"
         },
         {
-          "name": "SLACK_WEBHOOK_URL_DEPLOY",
-          "valueFrom": "${var.attributes.ssm_arn_slack_webhook_url_deploy}"
+          "name": "TWITTER_CONSUMER_KEY",
+          "valueFrom": "${var.attributes.ssm_arn_twitter_consumer_key}"
         },
         {
-          "name": "RAILS_MASTER_KEY",
-          "valueFrom": "${var.attributes.ssm_arn_rails_master_key}"
+          "name": "TWITTER_CONSUMER_SECRET",
+          "valueFrom": "${var.attributes.ssm_arn_twitter_consumer_secret}"
+        },
+        {
+          "name": "TWITTER_ACCESS_TOKEN_KEY",
+          "valueFrom": "${var.attributes.ssm_arn_twitter_access_token_key}"
+        },
+        {
+          "name": "TWITTER_ACCESS_TOKEN_SECRET",
+          "valueFrom": "${var.attributes.ssm_arn_twitter_access_token_secret}"
         }
       ],
       "environment":[
         {
-          "name": "RAILS_ENV",
-          "value": "${var.attributes.rails_env}"
+          "name": "NODE_ENV",
+          "value": "production"
         },
-        {
-          "name": "LOG_GROUP_URL",
-          "value": "https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logStream:group=${var.attributes.awslogs_group};prefix=scheduled-tasks/${var.attributes.task_name};streamFilter=typeLogStreamPrefix"
-        }
+
       ]
     } 
   ]

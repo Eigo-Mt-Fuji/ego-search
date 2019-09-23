@@ -1,7 +1,9 @@
-import S3Driver from "../drivers/s3-driver";
+import S3Driver from "../libs/s3-driver";
 import Env from "../env";
 import CsvFileService from "../services/csv_file_service";
 import EgoSearchService from "../services/ego_search_service";
+import TwitterDriver from "../libs/twitter-driver";
+import YoutubeDriver from "../libs/youtube-driver";
 
 class Task {
 
@@ -14,12 +16,12 @@ class Task {
             [
                 // TODO: CSVフォーマットを決める
                 {
-                    label: "timestamp",
-                    value: "日時",
+                    label: "video_id",
+                    value: "video_id",
                 },
             ],
         );
-        const service = new EgoSearchService(env, csvFileService);
+        const service = new EgoSearchService(env, csvFileService, new TwitterDriver(env), new YoutubeDriver(env));
         await service.run();
     }
 }

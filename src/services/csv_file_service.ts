@@ -32,7 +32,7 @@ export default class CsvFileService {
     public async createLocalDir(): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            fs.mkdir(`${this.localTmpDir}/`, (err: NodeJS.ErrnoException) => {
+            fs.mkdir(`${this.localTmpDir}/`, (err: NodeJS.ErrnoException | null) => { 
                 if (err) {
                     console.error(err);
                     reject(err);
@@ -47,7 +47,7 @@ export default class CsvFileService {
      */
     public removeLocalFile() {
         return new Promise((resolve, reject) => {
-            fs.unlink(this.getLocalFilePath(), (err: NodeJS.ErrnoException) => {
+            fs.unlink(this.getLocalFilePath(), (err: NodeJS.ErrnoException | null) => {
                 if (err) {
                     console.error(err);
                     reject(err);

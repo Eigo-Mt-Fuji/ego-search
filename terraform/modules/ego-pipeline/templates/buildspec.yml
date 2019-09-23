@@ -1,0 +1,57 @@
+version: 0.2
+
+env:
+  variables:
+    TF_VERSION: "0.12.6"
+phases:
+  install:
+    runtime-versions:
+      nodejs: 8
+    commands:
+      - echo "Install terraform $TF_VERSION ( https://learn.hashicorp.com/terraform/getting-started/install.html#installing-terraform )"
+      - cd /usr/local/bin
+      - "curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+      - unzip -o terraform.zip
+      - chmod +x /usr/local/bin/terraform
+      - apt-get install -y nkf
+  pre_build:
+    commands:
+      - echo "build started on `date`"
+  build:
+    commands:
+      - cd $CODEBUILD_SRC_DIR/terraform
+      - terraform init -backend=true
+      - terraform validate
+      - terraform workspace list	
+      - terraform workspace select $WORKSPACE	
+      - export PROJECT_NAME=$(echo $CODEBUILD_BUILD_ID | tr ":" "\t" | cut -f1)
+      - export BUILD_ID_ENCODED=$(echo "$CODEBUILD_BUILD_ID" | nkf -WwMQ | sed 's/=$//g' | tr = % | tr -d '\n')
+      - export BUILD_LINK="https://us-east-1.console.aws.amazon.com/codesuite/codebuild/projects/$PROJECT_NAME/build/$BUILD_ID_ENCODED/log"
+      - |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "run only terraform plan"
+            terraform plan -out="terraform.plan"
+            echo "codebuild source version $CODEBUILD_SOURCE_VERSION"
+            if [ $CODEBUILD_SOURCE_VERSION=="pr/*" ]; then
+              echo "terraform show"
+              terraform show -json terraform.plan > terraform.plan.json
+              echo "sed $CODEBUILD_SOURCE_VERSION"
+              export GITHUB_PULLREQUEST_NUMBER=$(echo $CODEBUILD_SOURCE_VERSION | sed -E "s#pr/(.+)#\1#g")
+              echo "select changes from terraform.plan.json"
+              export TERRAFORM_CHANGES_LENGTH=$(jq -rc ".resource_changes[] | select(.change.actions[0]!=\"no-op\") | length" terraform.plan.json)
+              export TERRAFORM_CHANGES=$(jq -r ".resource_changes[] | select(.change.actions[0]!=\"no-op\") | [.address, \"(\", (.change.actions | join(\",\")), \")\"] | join(\"\")" terraform.plan.json | sed 's/\"//g' | while read -r a; do echo "<li>$a</li>"; done | tr -d '\n')
+              export GITHUB_COMMENT_BODY="<details><summary><a target='_blank' href='$BUILD_LINK'>Terraform plan summary</a></summary><div><hr/><ul>$TERRAFORM_CHANGES</ul></div></details>"
+              echo "post issues comment $GITHUB_COMMENT_BODY"
+              if [ ! "$TERRAFORM_CHANGES_LENGTH"=="" ]; then curl -X POST -H 'Content-Type:application/json' -d "{\"body\":\"$GITHUB_COMMENT_BODY\"}" https://api.github.com/repos/$GITHUB_ORGANIZATION/$GITHUB_REPOSITORY_NAME/issues/$GITHUB_PULLREQUEST_NUMBER/comments?access_token=$GITHUB_PERSONAL_ACCESSTOKEN ; fi
+            fi
+          else
+            echo "run terraform"
+            terraform plan -out="terraform.plan"
+            terraform apply "./terraform.plan"
+          fi
+  post_build:
+    commands:
+      - echo "completed on `date`"
+artifacts:
+  files:
+    - '**/*'
