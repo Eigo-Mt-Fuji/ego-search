@@ -11,6 +11,76 @@
 
 ![image](./docs/image.png)
 
+## Tables
+
+* youtube_channels
+
+```
+youtube_user_name: text
+channel_id: text
+title: text
+```
+
+* search_history
+
+```
+key: varchar(255) -- egosearch_{channel_id}_yyyyMMddHHmmss
+channel_id: text
+created_at: timestamp
+```
+
+* youtube_videos
+
+```
+search_history_key: text
+video_id: text
+snippet_channel_id: text
+snippet_title: text
+snippet_description: text
+snippet_published_at: text 
+statistics_view_count: int
+statistics_like_count: int
+statistics_dislike_count: int
+statistics_favorite_count: int
+statistics_comment_count: int
+```
+
+* twitter_statuses
+
+```
+search_history_key: text,
+q: text,
+tweet_id_str: text,
+tweet_text: text,
+retweet_count: int,
+favorite_count: int,
+favorited: boolean,
+retweeted: boolean,
+tweet_text: text,
+created_at: text,
+user_followers_count: int,
+user_friends_count: int,
+user_favourites_count: int,
+user_statuses_count: int,
+user: JSON, 
+entities: JSON, 
+metadata: JSON,
+geo: JSON,
+possibly_sensitive: false,
+tweet_id_str: text, // '1181175379903385600',
+truncated: boolean,
+source: text, = context.source; //: '<a href="https://peing.net" rel="nofollow">Peing</a>',
+in_reply_to_status_id: text,
+in_reply_to_status_id_str: text,
+in_reply_to_user_id: text,
+in_reply_to_user_id_str: text,
+in_reply_to_screen_name: text,
+coordinates: text, 
+place: text,
+contributors: text,
+is_quote_status: text,
+```
+
 
 ## ローカル起動
 
