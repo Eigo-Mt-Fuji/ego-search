@@ -4,8 +4,10 @@ export default class Env {
             bucketName: this.getEnv("EGO_SEARCH_RESULT_BUCKET"),
         };
     }
-    get egoSearchKeyword() {
+    get egoSearchContext() {
         return {
+            userName: this.getEnv("EGO_SEARCH_USER_NAME"),
+            channelId: this.getEnv("EGO_SEARCH_CHANNEL_ID"),
             q: this.getEnv("EGO_SEARCH_KEYWORD"),
         };
     }

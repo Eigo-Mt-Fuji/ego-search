@@ -16,6 +16,10 @@
     "start": "node dist/index.js"
   },
   "devDependencies": {
+    "@types/mysql": "^2.15.7",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "0.2.19",
+    "mysql2": "^1.7.0",
     "@types/chai": "^4.2.3",
     "@types/mocha": "^5.2.7",
     "@types/sinon": "^7.0.13",
@@ -29,7 +33,11 @@
     "webpack-cli": "^3.3.9",
     "mixin-deep":"^2.0.1",
     "axios":"^0.19.0",
-    "set-value":"^3.0.1"  
+    "set-value":"^3.0.1",
+    "lodash":"^4.17.15",
+    "@types/lodash":"^4.14.138",
+    "puppeteer":"^1.20.0",
+    "@types/puppeteer":"^1.19.1"
   },
   "dependencies": {
     "@slack/client": "^5.0.2",
