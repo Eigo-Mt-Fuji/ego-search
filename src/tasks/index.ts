@@ -22,7 +22,7 @@ class Task {
             ],
         );
         const service = new EgoSearchService(env, csvFileService, new TwitterDriver(env), new YoutubeDriver(env));
-        await service.run(env.egoSearchContext.userName);
+        await service.run(env.egoSearchContext.userName, env.egoSearchContext.channelId);
     }
 }
 
