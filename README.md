@@ -1,15 +1,32 @@
 # README
 
-* Youtube
-* Twitter
-* AWS ECS Fargate
-* Docker
-* Terraform
-* NodeJs
+## 使い方
+
+```
+export NODE_ENV="production"
+export EGO_SEARCH_KEYWORD="洋楽"
+export EGO_SEARCH_CHANNEL_ID="UCVuV4A4UfetQa_xsUv1K54w"
+export EGO_SEARCH_USER_NAME="test"
+export YOUTUBE_API_KEY="発行された値をセット"
+export TWITTER_CONSUMER_KEY="発行された値をセット"
+export TWITTER_CONSUMER_SECRET="発行された値をセット"
+export TWITTER_ACCESS_TOKEN_KEY="発行された値をセット"
+export TWITTER_ACCESS_TOKEN_SECRET="発行された値をセット"
+export TYPEORM_CONNECTION="mysql"
+export TYPEORM_HOST="localhost"
+export TYPEORM_USERNAME="root"
+export TYPEORM_PASSWORD="root"
+export TYPEORM_DATABASE="test"
+export TYPEORM_PORT=3306
+yarn run start 
+```
+
 
 ## 構成図
 
 ![image](./docs/image.png)
+
+  * Youtube,Twitter,AWS ECS Fargate,Docker,Terraform,NodeJs
 
 ## Tables
 

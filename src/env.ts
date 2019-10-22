@@ -1,9 +1,4 @@
 export default class Env {
-    get egoSearchResultS3() {
-        return {
-            bucketName: this.getEnv("EGO_SEARCH_RESULT_BUCKET"),
-        };
-    }
     get egoSearchContext() {
         return {
             userName: this.getEnv("EGO_SEARCH_USER_NAME"),
