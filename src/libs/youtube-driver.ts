@@ -15,7 +15,7 @@ export default class YoutubeDriver {
         // https://developers.google.com/youtube/v3/docs/search/list?hl=ja
         const options: youtube_v3.Params$Resource$Channels$List = {
             forUsername: userName,
-            part: "id,statistics",
+            part: "id",
             fields: "pageInfo,items",
             // 結果セットとして返されるアイテムの最大数を 0 以上 50 以下の値を指定 / デフォルト値は 5 
             maxResults: 10,

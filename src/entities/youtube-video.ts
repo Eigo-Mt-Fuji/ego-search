@@ -1,5 +1,6 @@
-import { PrimaryColumn, Column } from "typeorm"
+import { Entity, PrimaryColumn, Column } from "typeorm"
 
+@Entity("youtube_videos")
 export default class YoutubeVideo {
 
     public constructor(search_history_key: string,video_id: string,snippet_channel_id: string,snippet_title: string,snippet_description: string,snippet_published_at: string,statistics_view_count: number,

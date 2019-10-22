@@ -8,4 +8,5 @@ terraform/*.plan
 terraform/*.tfstate
 terraform/*.tfvars
 /test/local-script.sh
+*.log
 

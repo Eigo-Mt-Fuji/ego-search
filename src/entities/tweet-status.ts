@@ -1,5 +1,6 @@
-import { PrimaryColumn, Column } from "typeorm"
+import { Entity, PrimaryColumn, Column } from "typeorm"
 
+@Entity("tweet_status")
 export default class TweetStatus {
 
     public constructor(

@@ -1,30 +1,30 @@
+import "reflect-metadata" ;
 import * as moment from "moment";
 import Env from "../env";
-import CsvFileService from "./csv_file_service";
 import TwitterDriver from "../libs/twitter-driver";
 import YoutubeDriver from "../libs/youtube-driver";
 import { getManager, Repository } from "typeorm";
-import SearchHistory from "../models/search-history";
-import YoutubeVideo from "../models/youtube-video";
+import SearchHistory from "../entities/search-history";
+import YoutubeVideo from "../entities/youtube-video";
+import TweetStatus from "../entities/tweet-status";
 import { youtube_v3 } from "googleapis";
-import TweetStatus from "../models/tweet-status";
-import { Gaxios, GaxiosResponse } from "gaxios";
+import { GaxiosResponse } from "gaxios";
 
 export default class EgoSearchService {
 
     private twitterApiKey: string;
     private youtubeApiKey: string;
     private keywordContext: any;
+
+
     /**
      * constructor
-     * @param env
-     * @param slackDriver
-     * @param benchmarkApiDriver
-     * @param optoutUserService
+     * @param env 
+     * @param twitterDriver 
+     * @param youtubeDriver 
      */
     public constructor(
         env: any,
-        private csvFileService: CsvFileService,
         private twitterDriver: TwitterDriver,
         private youtubeDriver: YoutubeDriver,
     ) {
@@ -92,7 +92,7 @@ export default class EgoSearchService {
         }catch(err) {
 
             console.error(err);
-            return undefined;
+            throw err;
         }
     }
     public async insertYoutubeVideos(repository: Repository<YoutubeVideo>, models: YoutubeVideo[]) {
@@ -101,7 +101,7 @@ export default class EgoSearchService {
             return true;
         }catch(err) {
             console.error(err);
-            return false;
+            throw err;
         }
     }
     public createSearchHistoryKey(channelId: string, now: Date)
@@ -143,7 +143,6 @@ export default class EgoSearchService {
                 console.error(videos);
                 throw new Error(`No items or invalid response returned from Youtube Data API (video id: ${videoIdsCsv}).`);
             }
-            console.log(videos.data.items);
                     
             const youtubeVideoModels: YoutubeVideo[] = videos.data.items.map( (item) => {
                 return this.createYoutubeVideoModel(searchHistoryKey, item);
@@ -162,6 +161,7 @@ export default class EgoSearchService {
         }catch(err) {
 
             console.error(err);
+            throw err;
         }
     }
 
@@ -200,7 +200,7 @@ export default class EgoSearchService {
         }catch(err) {
 
             console.error(err);
-            return false;
+            throw err;
         }
 
     }
@@ -255,8 +255,10 @@ export default class EgoSearchService {
             user.friends_count,
             user.favourites_count,
             user.statuses_count,
-            JSON.stringify(user),
-            JSON.stringify(entities),
+            // workaround for Data too long for column 'user' at row 1 
+            "", // JSON.stringify(user),
+            // workaround for Data too long for column 'entities' at row 1 
+            "", // JSON.stringify(entities),
             JSON.stringify(metadata),
             JSON.stringify(geo),
             possibly_sensitive,

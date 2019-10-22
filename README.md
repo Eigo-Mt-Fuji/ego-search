@@ -13,73 +13,74 @@
 
 ## Tables
 
-* youtube_channels
+* CREATE TABLE文
 
 ```
-youtube_user_name: text
-channel_id: text
-title: text
+create table typeorm_metadata (
+  \`type\` varchar(255) NOT NULL,
+  \`database\` varchar(255) DEFAULT NULL,
+  \`schema\` varchar(255) DEFAULT NULL,
+  \`table\` varchar(255) DEFAULT NULL,
+  \`name\` varchar(255) DEFAULT NULL,
+  \`value\` text
+) ENGINE=InnoDB;
+
+create table search_history (
+  \`key\` varchar(255) primary key, 
+  channel_id varchar(255), 
+  created_at datetime
+);
+
+create table youtube_videos(
+    search_history_key varchar(255),
+    video_id varchar(255),
+    snippet_channel_id varchar(255),
+    snippet_title text,
+    snippet_description text,
+    snippet_published_at varchar(255),
+    statistics_view_count bigint,
+    statistics_like_count bigint,
+    statistics_dislike_count bigint,
+    statistics_favorite_count bigint,
+    statistics_comment_count bigint,
+    context text,
+    primary key (search_history_key, video_id)
+);
+
+create table tweet_status(
+    search_history_key varchar(255),
+    q varchar(255),
+    tweet_id_str varchar(255),
+    tweet_text varchar(255),
+    retweet_count bigint,
+    favorite_count bigint,
+    favorited boolean,
+    retweeted boolean,
+    created_at varchar(255),
+    user_followers_count bigint,
+    user_friends_count bigint,
+    user_favourites_count bigint,
+    user_statuses_count bigint,
+    user varchar(255),
+    entities varchar(255),
+    metadata varchar(255),
+    geo varchar(255),
+    possibly_sensitive varchar(255),
+    truncated boolean,
+    source varchar(255),
+    in_reply_to_status_id_str varchar(255),
+    in_reply_to_user_id_str varchar(255),
+    in_reply_to_screen_name varchar(255),
+    coordinates varchar(255),
+    place varchar(255),
+    contributors varchar(255),
+    is_quote_status boolean,
+    lang varchar(255),
+
+    PRIMARY KEY(search_history_key, q, tweet_id_str)
+);
 ```
 
-* search_history
-
-```
-key: varchar(255) -- egosearch_{channel_id}_yyyyMMddHHmmss
-channel_id: text
-created_at: timestamp
-```
-
-* youtube_videos
-
-```
-search_history_key: text
-video_id: text
-snippet_channel_id: text
-snippet_title: text
-snippet_description: text
-snippet_published_at: text 
-statistics_view_count: int
-statistics_like_count: int
-statistics_dislike_count: int
-statistics_favorite_count: int
-statistics_comment_count: int
-```
-
-* twitter_statuses
-
-```
-search_history_key: text,
-q: text,
-tweet_id_str: text,
-tweet_text: text,
-retweet_count: int,
-favorite_count: int,
-favorited: boolean,
-retweeted: boolean,
-tweet_text: text,
-created_at: text,
-user_followers_count: int,
-user_friends_count: int,
-user_favourites_count: int,
-user_statuses_count: int,
-user: JSON, 
-entities: JSON, 
-metadata: JSON,
-geo: JSON,
-possibly_sensitive: false,
-tweet_id_str: text, // '1181175379903385600',
-truncated: boolean,
-source: text, = context.source; //: '<a href="https://peing.net" rel="nofollow">Peing</a>',
-in_reply_to_status_id: text,
-in_reply_to_status_id_str: text,
-in_reply_to_user_id: text,
-in_reply_to_user_id_str: text,
-in_reply_to_screen_name: text,
-coordinates: text, 
-place: text,
-contributors: text,
-is_quote_status: text,
-```
 
 
 ## ローカルテスト

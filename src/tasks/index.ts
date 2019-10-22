@@ -1,35 +1,51 @@
-import S3Driver from "../libs/s3-driver";
 import Env from "../env";
-import CsvFileService from "../services/csv_file_service";
 import EgoSearchService from "../services/ego_search_service";
 import TwitterDriver from "../libs/twitter-driver";
 import YoutubeDriver from "../libs/youtube-driver";
+import {createConnection} from "typeorm";
+import { MysqlConnectionOptions } from "typeorm/driver/mysql/MysqlConnectionOptions";
+import "reflect-metadata";
+import SearchHistory from "../entities/search-history";
+import TweetStatus from "../entities/tweet-status";
+import YoutubeVideo from "../entities/youtube-video";
 
 class Task {
 
     public async run() {
         const env = new Env();
-        const timestamp: number = Math.floor((new Date()).getTime() / 1000);
-        const s3Driver: S3Driver = new S3Driver(env.egoSearchResultS3.bucketName);
-        const csvFileService = new CsvFileService(
-            `/tmp/ego-search-${timestamp}`, `result-${timestamp}.csv`, "out", s3Driver,
-            [
-                // TODO: CSVフォーマットを決める
-                {
-                    label: "video_id",
-                    value: "video_id",
-                },
-            ],
-        );
-        const service = new EgoSearchService(env, csvFileService, new TwitterDriver(env), new YoutubeDriver(env));
+
+        const service = new EgoSearchService(env, new TwitterDriver(env), new YoutubeDriver(env));
         await service.run(env.egoSearchContext.userName, env.egoSearchContext.channelId);
     }
 }
+const options: MysqlConnectionOptions = {
+    "type": "mysql",
+    "name":"default",
+    "username": process.env.TYPEORM_USERNAME,
+    "password": process.env.TYPEORM_PASSWORD,
+    "database": process.env.TYPEORM_DATABASE,
+    "host": process.env.TYPEORM_HOST,
+    "port": parseInt(process.env.TYPEORM_PORT || "3306"),
+    "entities": [
+        SearchHistory,
+        TweetStatus,
+        YoutubeVideo,
+    ],
+};
+createConnection(options).then(async(connection) => {
+    const task = new Task();
+    
+    try {
+        await task.run();
+        console.log("完了");
+    }catch(err) {
+        
+        console.log("エラー", err);
+    }finally {
+        await connection.close();
+    }
+    
 
-new Task().run().then(() => {
-
-    console.log("完了");
-}).catch((reason: any) => {
-
-    console.log("エラー", reason);
+}).catch((err)=>{ 
+    console.log(err);
 });

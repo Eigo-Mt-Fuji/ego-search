@@ -6,9 +6,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run build:production",
-    "build:development": "webpack --mode development",
-    "build:production": "webpack --mode production",
-    "watch": "webpack --mode development -w",
+    "build:development": "node_modules/.bin/webpack --mode development",
+    "build:production": "node_modules/.bin/webpack --mode production",
+    "watch": "node_modules/.bin/webpack --mode development -w",
     "test": "find test -name '*.ts' | xargs mocha -r ts-node/register",
     "lint": "tslint -c tslint.json './src/**/*.ts'",
     "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix",
@@ -16,10 +16,16 @@
     "start": "node dist/index.js"
   },
   "devDependencies": {
-    "@types/mysql": "^2.15.7",
+    "html-loader":"^0.5.5",
+    "uglifyjs-webpack-plugin":"^2.2.0",
+    "webpack-filter-warnings-plugin":"^1.2.1",
+    "app-root-path":"^2.2.1",
+    "@types/mysql2": "github:types/mysql2",
+    "@types/node": "^12.11.2",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.2.19",
     "mysql2": "^1.7.0",
+    "sqlite3":"^4.1.0",
     "@types/chai": "^4.2.3",
     "@types/mocha": "^5.2.7",
     "@types/sinon": "^7.0.13",
@@ -37,7 +43,8 @@
     "lodash":"^4.17.15",
     "@types/lodash":"^4.14.138",
     "puppeteer":"^1.20.0",
-    "@types/puppeteer":"^1.19.1"
+    "@types/puppeteer":"^1.19.1",
+    "source-map-support": "^0.5.13"
   },
   "dependencies": {
     "@slack/client": "^5.0.2",
@@ -45,7 +52,6 @@
     "@types/json2csv":"^4.5.0",
     "@types/request": "^2.48.3",
     "aws-sdk": "^2.533.0",
-    "moment":"^2.24.0",
     "bufferutil": "^4.0.1",
     "moment": "^2.24.0",
     "https": "~1.0.0",

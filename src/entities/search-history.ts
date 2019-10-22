@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, PrimaryColumn} from "typeorm";
 
-@Entity()
+@Entity("search_history")
 export default class SearchHistory {
 
     public constructor(key: string, channelId: string, now: Date) {
