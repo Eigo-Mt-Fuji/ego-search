@@ -23,7 +23,7 @@
     "@types/mysql2": "github:types/mysql2",
     "@types/node": "^12.11.2",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "0.2.19",
+    "typeorm": "0.2.25",
     "mysql2": "^1.7.0",
     "sqlite3":"^4.1.0",
     "@types/chai": "^4.2.3",
